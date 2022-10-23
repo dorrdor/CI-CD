@@ -41,24 +41,10 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
-    # - task: PublishPipelineArtifact@1
-    #   inputs:
-    #     targetPath: '$(Pipeline.Workspace)'
-    #     artifact: 'nwtCI$(Build.BuildId)'
-    #     publishLocation: 'pipeline'
+
 
 - stage: 'CD_S'
   jobs:
-#   - job:
-#     steps:
-#     - task: DownloadBuildArtifacts@0
-#       inputs:
-#         buildType: 'current'
-#         downloadType: 'single'
-#         artifactName: 'drop'
-#         downloadPath: '$(System.ArtifactsDirectory)'
-  
-
   - deployment: staging
     environment: 'dev'
     variables:
@@ -80,18 +66,7 @@ stages:
         
           - script:
               ansible-playbook /home/adminuser/myagent/_work/1/s/ansible/playbook.yml -i /home/adminuser/myagent/_work/1/s/ansible/inventory --extra-vars "group=Staging"
-    
-          # - task: CmdLine@2
-          #   inputs:
-          #     script: 
-          #       sudo apt install ansible
-          # - task: Ansible@0
-          #   inputs:  
-          #     ansibleInterface: 'agentMachine'
-          #     playbookPathOnAgentMachine: '/home/adminuser/agent/myagent/_work/1/s/ansible/playbook.yml'
-          #     inventoriesAgentMachine: 'file'
-          #     inventoryFileOnAgentMachine: '/home/adminuser/agent/myagent/_work/1/s/ansible/inventory-staging'
-          
+            
 # - stage: 'CD_P'
 #   jobs:
 #   - deployment: prod
@@ -128,15 +103,3 @@ stages:
       #     package: '$(pipline.workspace)/**/*.zip'
 
 
-#- stage: 'CD'
-#   jobs:
-#   - job: 'staging'
-#     steps:  
-#     - task: DownloadBuildArtifacts@0
-#       inputs:
-#         buildType: 'current'
-#         downloadType: 'single'
-#         artifactName: 'nwtCI$(Build.BuildId)'
-#         downloadPath: '$(System.ArtifactsDirectory)'
-    
-#     
